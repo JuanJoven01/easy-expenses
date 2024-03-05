@@ -11,7 +11,7 @@ db_user=environment['POSTGRES_USER']
 db_password=environment['POSTGRES_PASSWORD']
 db_name=environment['DB_NAME']
 
-engine = create_engine(f'postgresql://{db_host}:{db_password@{db_host}/{db_name}}', echo=True)
+engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}', echo=True)
 
 Session = sessionmaker(bind=engine)
 session = Session()
