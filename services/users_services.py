@@ -77,3 +77,21 @@ def user_login(username:str, password:str):
         return token
     except Exception as e:
         return JSONResponse(status_code=500, content={'service error': str(e)})
+
+def change_password(username:str, password:str, new_password:str):
+    '''
+    First verify if id db exist an User with this username, 
+    if not, call the user un db and update the pass for the new hashed
+    '''
+    try:
+        hashed_password = __hash_password(password=new_password)
+        password_matches, user_id = __check_password_and_rehash_if_needed(username=username, plain_password=password)
+        if password_matches == False: return JSONResponse(status_code=400, content={'error': 'invalid password'})
+        with Session() as session:
+            query = select(Users).where(Users.id == user_id)
+            user = session.execute(query).scalar_one()
+            user.password = hashed_password
+            session.commit()
+        return JSONResponse(status_code=201, content={'successful': 'Password Updated'})
+    except Exception as e:
+        return JSONResponse(status_code=500, content={'service error': str(e)})
