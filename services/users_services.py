@@ -1,9 +1,10 @@
 from sqlalchemy import select
 from passlib.context import CryptContext
-from db.models import Users
+from db.models import Users, Categories
 from db.config import Session
 from fastapi.responses import JSONResponse
 from middlewares.auth import get_jwt_token
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -60,6 +61,7 @@ def create_new_user(username:str, password:str):
             new_user = Users(username=username, password = hashed_password)
             session.add(new_user)
             session.commit()
+        __create_default_categories_new_user(username=username)
         return JSONResponse(status_code=201, content={'successful': 'User Created'})
     except Exception as e:
         return JSONResponse(status_code=500, content={'service error': str(e)})
@@ -93,5 +95,33 @@ def change_password(username:str, password:str, new_password:str):
             user.password = hashed_password
             session.commit()
         return JSONResponse(status_code=201, content={'successful': 'Password Updated'})
+    except Exception as e:
+        return JSONResponse(status_code=500, content={'service error': str(e)})
+    
+def __create_default_categories_new_user(username:str):
+    try:
+        user = __find_user_by_name(username=username)
+        user_id = user.id
+        default_categories = [
+            "Food",
+            "Transportation",
+            "Housing",
+            "Health",
+            "Education",
+            "Entertainment",
+            "Clothing and Accessories",
+            "Savings and Investment",
+            "Personal Care",
+            "Pets",
+            "Travel and Vacation",
+            "Education",
+            'Governmental',
+            'Others'
+        ]
+        with Session() as session:
+            for category in default_categories:
+                new_category = Categories(name=category, user_id= user_id)
+                session.add(new_category)
+            session.commit()
     except Exception as e:
         return JSONResponse(status_code=500, content={'service error': str(e)})
