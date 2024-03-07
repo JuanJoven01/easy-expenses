@@ -9,11 +9,12 @@ from middlewares.auth import JWTBearer
 
 categories_router = APIRouter()
 
-@categories_router.get('/categories', tags=['categories'], dependencies=[Depends(JWTBearer())])
+@categories_router.get('/categories/get', tags=['categories'], dependencies=[Depends(JWTBearer())])
 def get_categories(jwt_payload = Depends(JWTBearer())):
     try:
         user_id = jwt_payload['user_id']
-        return get_my_categories(user_id=user_id)
+        categories =  get_my_categories(user_id=user_id)
+        return JSONResponse(status_code=200, content=categories)
     except Exception as e:
         return JSONResponse(status_code=500, content={'router error': str(e)})
     
@@ -21,7 +22,8 @@ def get_categories(jwt_payload = Depends(JWTBearer())):
 def new(category:Category, jwt_token = Depends(JWTBearer())):
     try:
         user_id = jwt_token['user_id']
-        return new_category(user_id=user_id, category_name=category.name)
+        if new_category(user_id=user_id, category_name=category.name) == True:
+            return JSONResponse(status_code=201, content={'message':'category created'})
     except Exception as e:
         return JSONResponse(status_code=500, content={'router error': str(e)})
     
@@ -29,6 +31,7 @@ def new(category:Category, jwt_token = Depends(JWTBearer())):
 def delete(category_id:int, jwt_token = Depends(JWTBearer())):
     try:
         user_id = jwt_token['user_id']
-        return delete_category(user_id=user_id, category_id=category_id)
+        if delete_category(user_id=user_id, category_id=category_id) == True:
+            return JSONResponse(status_code=200, content={'message':'category deleted'})
     except Exception as e:
         return JSONResponse(status_code=500, content={'router error': str(e)})

@@ -7,6 +7,7 @@ from middlewares.error_handler import ErrorHandler
 
 from router.users_router import users_router
 from router.categories_router import categories_router
+from router.expenses_router import expenses_router
 
 app = FastAPI()
 
@@ -14,6 +15,7 @@ app.add_middleware(ErrorHandler)
 
 app.include_router(users_router)
 app.include_router(categories_router)
+app.include_router(expenses_router)
 
 Base.metadata.create_all(bind=engine)
 

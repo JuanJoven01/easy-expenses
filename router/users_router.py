@@ -14,7 +14,8 @@ def new_user(user: User):
     try:
         username = user.username
         password = user.password
-        return create_new_user(username=username, password=password)
+        if create_new_user(username=username, password=password) == True:
+            return JSONResponse(status_code=201, content={'successful': 'User Created'})
     except Exception as e:
         return JSONResponse(status_code=500, content={'router error': str(e)})
     
@@ -23,7 +24,8 @@ def login(user: User):
     try:
         username = user.username
         password = user.password
-        return user_login(username=username, password=password)
+        token = user_login(username=username, password=password)
+        return JSONResponse(status_code=200, content=token)
     except Exception as e:
         return JSONResponse(status_code=500, content={'router error': str(e)})
 
@@ -33,6 +35,7 @@ def change_pass(user: UserNewPass, jwt_payload = Depends(JWTBearer())):
         username = jwt_payload['username']
         password = user.password
         new_password = user.new_password
-        return change_password(username=username, password=password, new_password=new_password)
+        if change_password(username=username, password=password, new_password=new_password) == True:
+            return JSONResponse(status_code=201, content={'successful': 'Password Updated'})
     except Exception as e:
         return JSONResponse(status_code=500, content={'router error': str(e)})
