@@ -99,6 +99,10 @@ def change_password(username:str, password:str, new_password:str):
         return JSONResponse(status_code=500, content={'service error': str(e)})
     
 def __create_default_categories_new_user(username:str):
+    '''
+    This function create a default categories
+    its executed when a new user are created
+    '''
     try:
         user = __find_user_by_name(username=username)
         user_id = user.id
