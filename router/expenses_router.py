@@ -11,7 +11,7 @@ from middlewares.auth import JWTBearer
 expenses_router = APIRouter()
 
 @expenses_router.get('/expenses/get', tags=['expenses'], dependencies=[Depends(JWTBearer())])
-def get_categories(jwt_payload = Depends(JWTBearer())):
+def get_expenses(jwt_payload = Depends(JWTBearer())):
     try:
         user_id = jwt_payload['user_id']
         expenses = get_my_expenses(user_id)

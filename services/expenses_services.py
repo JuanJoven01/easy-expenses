@@ -58,7 +58,7 @@ def delete_expense(user_id:int, expense_id:int):
         session.delete(expense)
         session.commit()
         return True
-        
+         
     
 def __verify_if_category_belong_user(user_id:int, category_id:int):
     '''
