@@ -22,26 +22,6 @@ def get_all_expenses(user_id:int, initial_date:str, final_date:str):
         expenses = [dict(id=expense.id, name=expense.name, description=expense.description, amount= expense.amount, date=str(expense.date), user_id=expense.user_id, category_id=expense.category_id) for expense in session.execute(query).scalars().all()]
     return expenses
 
-# def get_expenses_per_category(user_id:int, initial_date:str, final_date:str):
-#     '''
-#     Get all the expenses from a specific user,
-#     filtered by date
-#     '''
-#     # expenses = get_all_expenses(user_id= user_id, initial_date=initial_date, final_date=final_date)
-#     final_date = final_date + timedelta(days=1)
-#     with Session() as session:
-#         query = (
-#             select(Expenses)
-#             .join(Categories,
-#                      Expenses.category_id == Categories.id
-#                      )
-#             .where(Expenses.user_id == user_id)
-#             .where(Expenses.date >= initial_date)
-#             .where(Expenses.date <= final_date)
-#                  )
-#         expenses = session.execute(query).scalars().all()
-#     return expenses
-
 def get_expenses_per_category(user_id:int, initial_date:str, final_date:str):
     '''
     Get all the expenses from a specific user,
