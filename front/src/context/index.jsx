@@ -4,12 +4,16 @@ export const GlobalContext = createContext()
 
 export const GlobalProvider = (props) => {
 
-    const [toTry, setToTry] = useState('Just to try')
+    const [routesToShow, setRoutesToShow] = useState([])
+
+    const [userLogged, setUserLogged] = useState(false)
 
     return(
         <GlobalContext.Provider value={{
-            toTry,
-            setToTry
+            routesToShow,
+            setRoutesToShow,
+            userLogged,
+            setUserLogged
         }}>
             {props.children}
         </GlobalContext.Provider>
