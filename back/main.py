@@ -16,7 +16,7 @@ from middlewares.api_key import check_api_key, host
 app = FastAPI()
 
 app.add_middleware(ErrorHandler)
-app.middleware("http")(check_api_key)
+app.middleware(check_api_key)
 origins = [
     "http://localhost:5173",
     host
