@@ -14,8 +14,11 @@ def new_user(user: User):
     try:
         username = user.username
         password = user.password
-        if create_new_user(username=username, password=password) == True:
+        its_created = create_new_user(username=username, password=password)
+        if its_created == True:
             return JSONResponse(status_code=201, content={'successful': 'User Created'})
+        else:
+            return its_created
     except Exception as e:
         return JSONResponse(status_code=500, content={'router error': str(e)})
     
