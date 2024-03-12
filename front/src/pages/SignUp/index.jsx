@@ -26,6 +26,8 @@ export const SignUp = () => {
     const password = useRef(null)
     const password2 = useRef(null)
 
+    
+
     return (
         <section className="min-h-[82vh] ">
         
@@ -50,6 +52,7 @@ export const SignUp = () => {
             </div>
 
         </form>
+
         </section>
     )
 }
