@@ -1,11 +1,16 @@
 from fastapi import Request, HTTPException
 
-from dotenv import dotenv_values, load_dotenv
-load_dotenv(override=False)
-environment = dotenv_values(".env")
+# from dotenv import dotenv_values, load_dotenv
+# load_dotenv(override=False)
+# environment = dotenv_values(".env")
 
-api_key = environment['API_KEY']
-host = environment['HOST']
+import os
+
+# api_key = environment['API_KEY']
+# host = environment['HOST']
+
+api_key = os.getenv('API_KEY')
+host = os.getenv('HOST')
 
 async def check_api_key(request: Request):
     provided_api_key = request.headers.get("API-KEY")

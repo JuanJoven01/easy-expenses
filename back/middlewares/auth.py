@@ -3,13 +3,17 @@ from jose import jwt
 from fastapi import HTTPException, status, Request
 from fastapi.security import HTTPBearer
 
-from dotenv import dotenv_values, load_dotenv
-load_dotenv(override=False)
-environment = dotenv_values(".env")
+# from dotenv import dotenv_values, load_dotenv
+# load_dotenv(override=False)
+# environment = dotenv_values(".env")
+
+import os
 
 def get_jwt_token(user_validated: bool, username: str, user_id: int):
-    secret_key = environment["SECRET_KEY"]
-    algorithm = environment["ALGORITHM"]
+    # secret_key = environment["SECRET_KEY"]
+    # algorithm = environment["ALGORITHM"]
+    secret_key = os.getenv("SECRET_KEY")
+    algorithm = os.getenv("ALGORITHM")
     body = {
         "username": username,
         "user_id": user_id
@@ -20,8 +24,10 @@ def get_jwt_token(user_validated: bool, username: str, user_id: int):
         return False
     
 def validate_jwt_token(token: str):
-    secret_key = environment["SECRET_KEY"]
-    algorithm = environment["ALGORITHM"]
+    # secret_key = environment["SECRET_KEY"]
+    # algorithm = environment["ALGORITHM"]
+    secret_key = os.getenv("SECRET_KEY")
+    algorithm = os.getenv("ALGORITHM")
     try:
         return jwt.decode(token, secret_key, algorithms=[algorithm])
     except:
@@ -39,7 +45,8 @@ class JWTBearer(HTTPBearer):
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Invalid JWT token",
                 )
-            return jwt.decode(credentials.credentials, environment["SECRET_KEY"])
+            # return jwt.decode(credentials.credentials, environment["SECRET_KEY"])
+            return jwt.decode(credentials.credentials, os.getenv("SECRET_KEY"))
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
