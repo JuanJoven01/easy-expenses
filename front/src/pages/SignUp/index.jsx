@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef } from "react"
 
-import { GlobalContext } from "../../context"
+import { GlobalContext, backHost } from "../../context"
+
 
 import { Title } from "../../components/Title"
 import { TextBox } from "../../components/TextBox"
@@ -26,6 +27,20 @@ export const SignUp = () => {
     const password = useRef(null)
     const password2 = useRef(null)
 
+    const createUser = async () => {
+        globalContext.setLoading(true)
+        fetch(backHost,{
+            method: 'GET',
+            // body: {
+            //     "username": username,
+            //     "password": password
+            //   }
+        })
+        .then((res) => res.json())
+        .then((response) => console.log(response) )
+        globalContext.setLoading(false)
+
+    }
     
 
     return (
@@ -47,7 +62,7 @@ export const SignUp = () => {
                 Repeat Password:
                 <input ref={password2} type="password" name="username" className="ml-4 grow bg-slate-500 px-2" />
             </label>
-            <div className='mt-4 flex justify-center'>
+            <div className='mt-4 flex justify-center' onClick={() => {createUser()}}>
                 <FormButton text='Sign Up'/>
             </div>
 

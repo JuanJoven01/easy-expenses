@@ -1,6 +1,8 @@
+import { useContext } from "react"
 import { BrowserRouter, useRoutes } from "react-router-dom"
+import { createPortal } from "react-dom"
 
-import { GlobalProvider } from "./context"
+import { GlobalContext } from "./context"
 
 import { Home } from "./pages/Home"
 import { Navbar } from "./components/Navbar"
@@ -10,6 +12,8 @@ import { Expenses } from "./pages/Expenses"
 import { Reporters } from "./pages/Reporters"
 import { Logout } from "./pages/Logout"
 import { SignUp } from "./pages/SignUp"
+import { Error } from "./components/Error"
+import { Loading } from "./components/Loading"
 
 const AppRoutes = () => {
 
@@ -28,17 +32,18 @@ const AppRoutes = () => {
 
 function App() {
 
-  
+  const globalContext = useContext(GlobalContext)
+
   return (
     <div className="bg-slate-800 top-0 absolute w-full min-h-[100vh]">
       <BrowserRouter>
-      <GlobalProvider>
           <Navbar />
           <div className='mt-16  '>
+            {globalContext.inError[0] && createPortal(<Error text={globalContext.inError[1]} />, document.body)}
+            {globalContext.loading && createPortal(<Loading />, document.body)}
             <AppRoutes />
           </div>
           <Footer />
-        </GlobalProvider>
       </BrowserRouter>
     </div>
   )
